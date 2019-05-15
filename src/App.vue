@@ -1,17 +1,56 @@
+
+
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <ul>
+      <div v-for="diary in diarys" :diary="diary" :key="diary.title"> 
+        <h1>{{diary.title}}</h1>
+        <p>{{diary.content}}</p>
+      </div> 
+    </ul>
+ 
   </div>
 </template>
 
+ <!--  <input type='text' v-model="sendDiary" placeholder="title">
+    <input type='text' v-model="sendDiary" placeholder="content">
+    <button v-on:click="send">send</button> -->
+
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+const axios = require('axios');
+// import DiaryArticle from './components/DiaryArticle.vue';
 
 export default {
   name: 'app',
+  data() {
+    return {
+      diarys: [
+      ],
+      sendDiary: []
+    };
+  },
+  methods: {
+    send() {
+      // axios({
+      //   method: 'post',
+      //   url: 'http://localhost:3000/post',
+      //   data: {
+      //     sendDiary: this.sendDiary
+      //   }
+      // })
+      axios.post('http://localhost:3000/post',[{title:'shine'}])
+      .then(function(response) {
+        console.log(response.data);
+      })
+    }
+  },
   components: {
-    HelloWorld
+    // 'diary-article': DiaryArticle
+  },
+  mounted () {
+    axios.get('http://localhost:3000/diarys')
+    .then(response => (this.diarys = response.data.diarys));
   }
 }
 </script>

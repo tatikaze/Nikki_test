@@ -11,7 +11,7 @@ module.exports = {
     outputDir: 'public/', // 2. 出力先
     pages: {
         index: {
-            entry: 'src/main/client/main.ts', // エントリーポイント
+            entry: 'src/main.js', // エントリーポイント
             template: 'dist/index.html', //3. index.htmlテンプレート
             filename: 'index.html' // 省略可
         }

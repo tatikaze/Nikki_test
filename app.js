@@ -1,8 +1,10 @@
 const path = require('path');
+const bodyParser = require('body-parser');
 const express = require('express');  // expressモジュールのインポート
 const app = express();  // エクスプレスのインスタンス生成
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json())
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -19,16 +21,17 @@ app.get('/diarys', (req, res) => {
     res.json(data);
 });
 
-// app.post('/post', (req, res) => {
-//     console.log(req);
-//     res.json();
-// });
+app.post('/post', (req, res) => {
+    console.log(req.body);
+    data.diarys.push(req.body);
+    res.json(data);
+});
 
 var data = {
   diarys: [
     {title: 'もうだめだ', content: 'おしまいだぁ'},
     {title: 'Vtuberすこっていけ', content: 'バ美肉おじさんは救いです'},
-    {title: 'オーバーウォッチくそげー', content: '殺さないでください'}
+    {title: 'オーバーウォッチくそげー', content: '殺さないでください'},
   ]
 }
 

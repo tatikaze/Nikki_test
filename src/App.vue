@@ -9,13 +9,11 @@
         <p>{{diary.content}}</p>
       </div> 
     </ul>
- 
+    <input type='text' v-model="sendDiary.title" placeholder="title">
+    <input type='text' v-model="sendDiary.content" placeholder="content">
+    <button v-on:click="send">send</button>
   </div>
 </template>
-
- <!--  <input type='text' v-model="sendDiary" placeholder="title">
-    <input type='text' v-model="sendDiary" placeholder="content">
-    <button v-on:click="send">send</button> -->
 
 <script>
 const axios = require('axios');
@@ -25,32 +23,36 @@ export default {
   name: 'app',
   data() {
     return {
+      //dataに直にkeyvalueをつくっておくれるか試してみる
+      //sendDiary: this.sendDiary的なことをaxiosで書く
       diarys: [
       ],
-      sendDiary: []
+      sendDiary: {
+        title: "",
+        content: ""
+      }
     };
   },
   methods: {
     send() {
-      // axios({
-      //   method: 'post',
-      //   url: 'http://localhost:3000/post',
-      //   data: {
-      //     sendDiary: this.sendDiary
-      //   }
-      // })
-      axios.post('http://localhost:3000/post',[{title:'shine'}])
+      axios.post('http://localhost:3000/post',{title: this.sendDiary.title, content: this.sendDiary.content})
       .then(function(response) {
-        console.log(response.data);
+        console.log(response.data.diarys);
       })
+    },
+    get() {
+      axios.get('http://localhost:3000/diarys')
+    .then(response => (this.diarys = response.data.diarys));
     }
   },
   components: {
     // 'diary-article': DiaryArticle
   },
   mounted () {
-    axios.get('http://localhost:3000/diarys')
-    .then(response => (this.diarys = response.data.diarys));
+    this.get();
+  },
+  beforeUpdate () {
+    this.get();
   }
 }
 </script>
